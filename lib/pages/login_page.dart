@@ -5,7 +5,7 @@ import 'package:streamlt/components/my_textfield.dart';
 import 'package:streamlt/components/square_tile.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
         context: context,
         builder: (context){
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
     });
@@ -43,18 +43,22 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
 
       // Wrong email or password
-      if(e.code == 'user-not-found' || e.code == 'wrong-password'){
-        wrongEmailPasswordMessage();
-      }
+      showErrorMessage(e.code);
     }
   }
   
-  void wrongEmailPasswordMessage(){
+  void showErrorMessage(String message){
     showDialog(
         context: context,
         builder: (context){
-          return const AlertDialog(
-            title: Text('User not found, check again your email and password'),
+          return AlertDialog(
+            backgroundColor: Colors.deepPurple,
+            title: Center(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
           );
         });
   }
