@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:streamlt/pages/login_page.dart';
-import 'package:streamlt/pages/register_page.dart';
+import 'package:streamlt/pages/authentication/login_page.dart';
+import 'package:streamlt/pages/authentication/register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
   const LoginOrRegisterPage({super.key});
@@ -11,8 +11,6 @@ class LoginOrRegisterPage extends StatefulWidget {
 }
 
 class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
-  @override
-
   // initially show login page
   bool showLoginPage = true;
 
@@ -22,6 +20,7 @@ class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
       showLoginPage = !showLoginPage;
     });
   }
+  @override
   Widget build(BuildContext context) {
     if (showLoginPage) {
       return LoginPage(onTap: togglePages
@@ -30,6 +29,6 @@ class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
       return RegisterPage(
         onTap: togglePages,
       );
-    };
+    }
   }
 }
