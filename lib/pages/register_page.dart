@@ -15,8 +15,8 @@ class RegisterPage extends StatefulWidget {
 class _LoginPageState extends State<RegisterPage> {
   // text editing controller
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
 
   // sign user in method
   void signUserUp() async{
@@ -32,12 +32,19 @@ class _LoginPageState extends State<RegisterPage> {
 
     // try creating the user
     try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      // check if password is confirmed
+      if(passwordController.text == confirmpasswordController.text){
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+      //  show error message, passwords
+        Navigator.pop(context);
+        showErrorMessage("Password don't match!");
+
+      }
       // pop the loading circle
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e){
 
       // pop the loading circle
@@ -115,7 +122,7 @@ class _LoginPageState extends State<RegisterPage> {
 
               // confirm password textfield
               MyTextField(
-                controller: passwordController,
+                controller: confirmpasswordController,
                 hintText: 'Confirm Password',
                 obscureText: true,
               ),
