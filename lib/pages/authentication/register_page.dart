@@ -195,7 +195,7 @@ class _LoginPageState extends State<RegisterPage> {
                       imagePath: 'lib/images/google-icon.png'
                   ),
 
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
 
                   // apple button
                   SquareTile(
