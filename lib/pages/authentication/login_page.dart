@@ -33,20 +33,19 @@ class _LoginPageState extends State<LoginPage> {
 
     // try sign in
     try{
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-      // pop the loading circle
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e){
-
-      // pop the loading circle
-      Navigator.pop(context);
 
       // Wrong email or password
       showErrorMessage(e.code);
     }
+
+    // pop the loading circle
+    Navigator.pop(context);
   }
   
   void showErrorMessage(String message){
