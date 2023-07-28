@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streamlt/pages/main/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_buttons.dart';
+import 'package:streamlt/pages/main/widgets/recommend_widget.dart';
 
 class MoviePage extends StatelessWidget {
   const MoviePage({super.key});
@@ -133,6 +134,8 @@ class MoviePage extends StatelessWidget {
                     ),
                   ),
 
+                  const SizedBox(height: 10,),
+                  RecommendWidget(),
                   const SizedBox(height: 10,),
 
                 ],
