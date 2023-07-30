@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:streamlt/components/constants.dart';
+import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/movie_page.dart';
 
 class NewMovieWidget extends StatelessWidget {
-  const NewMovieWidget({super.key});
+  final AsyncSnapshot<List<Movie>> snapshot;
+
+  const NewMovieWidget({required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
+    final newMovies = snapshot.data;
+
+    if (newMovies == null || newMovies.isEmpty) {
+      return const Center(
+        child: Text('No new movies'),
+      );
+    }
     return Column(
       children: [
         Padding(
@@ -31,100 +42,52 @@ class NewMovieWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 15,),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              InkWell(
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MoviePage()),
-                  );
-                },
-                child: Container(
-                  width: 190,
-                  height: 300,
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF292B37),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF292B37).withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: Image.network(
-                          'https://th.bing.com/th/id/OIP.r2zR1kgdSBUAyxKwHPdd0QHaK-?pid=ImgDet&rs=1',
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 5,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Movie Title Here',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 5,),
-                            const Text(
-                              'Action/Adventure',
-                              style: TextStyle(
-                                color: Colors.white54,
-                              ),
-                            ),
-                            const SizedBox(height: 8,),
-                            Row(
-                              children: const [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                ),
-                                Text(
-                                  '8.5',
-                                  style: TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+        const SizedBox(
+          height: 15,
+        ),
+        SizedBox(
+          height: 250,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: newMovies.map((movie) {
+                return _buildNewMovieCard(context, movie);
+              }).toList(),
+            ),
           ),
         ),
-        const SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
       ],
+    );
+  }
+
+  Widget _buildNewMovieCard(BuildContext context, Movie movie) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MoviePage(
+              movie: movie,
+            ),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        // onTap: () => MoviePage(),
+
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }

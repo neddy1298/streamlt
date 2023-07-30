@@ -22,11 +22,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   late Future<List<Movie>> upcomingMovies;
+  late Future<List<Movie>> newMovies;
 
   @override
   void initState() {
     super.initState();
     upcomingMovies = Api().getUpcomingMovies();
+    newMovies = Api().getNewMovies();
   }
 
   @override
@@ -136,7 +138,24 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const NewMovieWidget(),
+              FutureBuilder(
+                future: newMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('error'),
+                    );
+                  } else if (snapshot.hasData) {
+                    return NewMovieWidget(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),

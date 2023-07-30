@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:streamlt/components/constants.dart';
+import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_buttons.dart';
 import 'package:streamlt/pages/main/widgets/recommend_widget.dart';
 
 class MoviePage extends StatelessWidget {
-  const MoviePage({super.key});
+
+  final Movie movie;
+
+  const MoviePage({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class MoviePage extends StatelessWidget {
           Opacity(
             opacity: 0.4,
             child: Image.network(
-              'https://th.bing.com/th/id/OIP.r2zR1kgdSBUAyxKwHPdd0QHaK-?pid=ImgDet&rs=1',
+              '${Constants.imagePath}${movie.backdrop_path}',
               height: 250,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -73,7 +78,7 @@ class MoviePage extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
-                              'https://th.bing.com/th/id/OIP.r2zR1kgdSBUAyxKwHPdd0QHaK-?pid=ImgDet&rs=1',
+                              '${Constants.imagePath}${movie.poster_path}',
                               height: 250,
                               width: 180,
                             ),
@@ -109,9 +114,9 @@ class MoviePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          'Movie Title',
+                          movie.title,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,
@@ -120,10 +125,7 @@ class MoviePage extends StatelessWidget {
                         ),
                         SizedBox(height: 15,),
                         Text(
-                          'This is the sample desctioption of the movie, '
-                              'you can write here the description of the movie.'
-                              'This is the sample desctioption of the movie, '
-                              'you can write here the description of the movie.',
+                          movie.overview,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

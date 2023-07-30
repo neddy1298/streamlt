@@ -1,4 +1,5 @@
 class Movie {
+  String id;
   String title;
   String original_title;
   String backdrop_path;
@@ -6,8 +7,10 @@ class Movie {
   String overview;
   String release_date;
   dynamic vote_average;
+  // String genre_id;
 
   Movie({
+    required this.id,
     required this.title,
     required this.original_title,
     required this.backdrop_path,
@@ -15,10 +18,12 @@ class Movie {
     required this.overview,
     required this.release_date,
     required this.vote_average,
+    // required this.genre_id,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
+      id: json["id"],
       title: json["title"],
       original_title: json["original_title"],
       backdrop_path: json["backdrop_path"],
@@ -26,6 +31,7 @@ class Movie {
       overview: json["overview"],
       release_date: json["release_date"],
       vote_average: json["vote_average"],
+      // genre_id: json["genre_id"],
     );
   }
 }
