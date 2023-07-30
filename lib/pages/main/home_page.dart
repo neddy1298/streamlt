@@ -4,6 +4,7 @@ import 'package:streamlt/api/api.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/newmovie_widget.dart';
+import 'package:streamlt/pages/main/widgets/popular_widget.dart';
 import 'package:streamlt/pages/main/widgets/upcoming_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,12 +24,14 @@ class _HomePageState extends State<HomePage> {
 
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> newMovies;
+  late Future<List<Movie>> popularMovies;
 
   @override
   void initState() {
     super.initState();
     upcomingMovies = Api().getUpcomingMovies();
     newMovies = Api().getNewMovies();
+    popularMovies = Api().getPopularMovies();
   }
 
   @override
@@ -126,6 +129,27 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else if (snapshot.hasData) {
                     return UpComingWidget(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              FutureBuilder(
+                future: popularMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('error'),
+                    );
+                  } else if (snapshot.hasData) {
+                    return PopularMovieWidget(
                       snapshot: snapshot,
                     );
                   } else {
