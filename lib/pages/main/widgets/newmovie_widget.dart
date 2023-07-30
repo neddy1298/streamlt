@@ -6,7 +6,7 @@ import 'package:streamlt/pages/main/movie_page.dart';
 class NewMovieWidget extends StatelessWidget {
   final AsyncSnapshot<List<Movie>> snapshot;
 
-  const NewMovieWidget({required this.snapshot});
+  const NewMovieWidget({super.key, required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +19,11 @@ class NewMovieWidget extends StatelessWidget {
     }
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Text(
                 'New Movies',
                 style: TextStyle(

@@ -5,11 +5,11 @@ class MovieButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40,),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           MovieButton(iconName: Icons.add,),
           MovieButton(iconName: Icons.favorite_border,),
           MovieButton(iconName: Icons.download,),

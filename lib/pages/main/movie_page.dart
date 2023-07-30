@@ -117,16 +117,16 @@ class MoviePage extends StatelessWidget {
                       children: [
                         Text(
                           movie.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(height: 15,),
+                        const SizedBox(height: 15,),
                         Text(
                           movie.overview,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -137,7 +137,7 @@ class MoviePage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10,),
-                  RecommendWidget(),
+                  const RecommendWidget(),
                   const SizedBox(height: 10,),
 
                 ],

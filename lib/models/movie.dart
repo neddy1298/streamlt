@@ -1,5 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
 class Movie {
-  String id;
+  int id;
   String title;
   String original_title;
   String backdrop_path;
