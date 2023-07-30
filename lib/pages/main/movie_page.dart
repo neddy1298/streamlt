@@ -7,7 +7,6 @@ import 'package:streamlt/pages/main/widgets/movie_buttons.dart';
 import 'package:streamlt/pages/main/widgets/recommend_widget.dart';
 
 class MoviePage extends StatefulWidget {
-
   final Movie movie;
   final int movieId;
 
@@ -18,7 +17,6 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-
   late Future<List<Movie>> recommendedMovies;
 
   @override
@@ -26,6 +24,7 @@ class _MoviePageState extends State<MoviePage> {
     super.initState();
     recommendedMovies = Api().getRecommendedMovies(widget.movieId);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,22 +44,23 @@ class _MoviePageState extends State<MoviePage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 25),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.pop(context);
                           },
                           child: const Icon(
-                              Icons.arrow_back,
+                            Icons.arrow_back,
                             color: Colors.white,
                             size: 30,
                           ),
                         ),
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.pop(context);
                           },
                           child: const Icon(
@@ -72,8 +72,9 @@ class _MoviePageState extends State<MoviePage> {
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 60,),
+                  const SizedBox(
+                    height: 60,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
@@ -123,11 +124,13 @@ class _MoviePageState extends State<MoviePage> {
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 30,),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   const MovieButtons(),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -139,15 +142,18 @@ class _MoviePageState extends State<MoviePage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const SizedBox(height: 15,),
-
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Text(
                           widget.movie.id.toString(),
                           style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 15,),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Text(
                           widget.movie.overview,
                           style: const TextStyle(
@@ -159,8 +165,9 @@ class _MoviePageState extends State<MoviePage> {
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   FutureBuilder(
                     future: recommendedMovies,
                     builder: (context, snapshot) {
@@ -172,7 +179,6 @@ class _MoviePageState extends State<MoviePage> {
                             fontSize: 16,
                           ),
                         );
-
                       } else if (snapshot.hasData) {
                         return RecommendWidget(
                           snapshot: snapshot,
@@ -184,8 +190,9 @@ class _MoviePageState extends State<MoviePage> {
                       }
                     },
                   ),
-                  const SizedBox(height: 10,),
-
+                  const SizedBox(
+                    height: 10,
+                  ),
                 ],
               ),
             ),
