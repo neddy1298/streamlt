@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
+import 'package:streamlt/pages/main/movie_page.dart';
 
 class UpComingWidget extends StatelessWidget {
   final AsyncSnapshot<List<Movie>> snapshot;
@@ -53,7 +54,7 @@ class UpComingWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: upcomingMovies.map((movie) {
-                return _buildUpcomingMovieCard(movie);
+                return _buildUpcomingMovieCard(context, movie);
               }).toList(),
             ),
           ),
@@ -62,14 +63,26 @@ class UpComingWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUpcomingMovieCard(Movie movie) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image.network(
-          '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
-          fit: BoxFit.cover,
+  Widget _buildUpcomingMovieCard(BuildContext context, Movie movie) {
+    return InkWell(
+        onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MoviePage(
+            movie: movie,
+          ),
+        ),
+      );
+    },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
