@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:streamlt/api/api.dart';
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_buttons.dart';
 import 'package:streamlt/pages/main/widgets/recommend_widget.dart';
 
-class MoviePage extends StatelessWidget {
+class MoviePage extends StatefulWidget {
 
   final Movie movie;
+  final int movieId;
 
-  const MoviePage({super.key, required this.movie});
+  const MoviePage({super.key, required this.movie, required this.movieId});
 
+  @override
+  State<MoviePage> createState() => _MoviePageState();
+}
+
+class _MoviePageState extends State<MoviePage> {
+
+  late Future<List<Movie>> recommendedMovies;
+
+  @override
+  void initState() {
+    super.initState();
+    recommendedMovies = Api().getRecommendedMovies(widget.movieId);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +34,7 @@ class MoviePage extends StatelessWidget {
           Opacity(
             opacity: 0.4,
             child: Image.network(
-              '${Constants.imagePath}${movie.backdrop_path}',
+              '${Constants.imagePath}${widget.movie.backdrop_path}',
               height: 250,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -57,7 +72,7 @@ class MoviePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   const SizedBox(height: 60,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -78,7 +93,7 @@ class MoviePage extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
-                              '${Constants.imagePath}${movie.poster_path}',
+                              '${Constants.imagePath}${widget.movie.poster_path}',
                               height: 250,
                               width: 180,
                             ),
@@ -108,6 +123,7 @@ class MoviePage extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 30,),
                   const MovieButtons(),
                   Padding(
@@ -116,7 +132,7 @@ class MoviePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          movie.title,
+                          widget.movie.title,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 30,
@@ -124,8 +140,16 @@ class MoviePage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 15,),
+
                         Text(
-                          movie.overview,
+                          widget.movie.id.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 15,),
+                        Text(
+                          widget.movie.overview,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -137,7 +161,29 @@ class MoviePage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10,),
-                  const RecommendWidget(),
+                  FutureBuilder(
+                    future: recommendedMovies,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text(
+                          'Error: ${snapshot.error}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        );
+
+                      } else if (snapshot.hasData) {
+                        return RecommendWidget(
+                          snapshot: snapshot,
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
                   const SizedBox(height: 10,),
 
                 ],

@@ -26,5 +26,15 @@ class Api{
       throw Exception('Something happened');
     }
   }
+
+  Future<List<Movie>> getRecommendedMovies(int movieId) async{
+    final response = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/$movieId/recommendations?api_key=${Constants.apiKey}'));
+    if (response.statusCode == 200){
+      final decodedData = jsonDecode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something happened');
+    }
+  }
 }
 

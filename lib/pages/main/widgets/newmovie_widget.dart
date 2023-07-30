@@ -72,6 +72,7 @@ class NewMovieWidget extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => MoviePage(
               movie: movie,
+              movieId: movie.id,
             ),
           ),
         );

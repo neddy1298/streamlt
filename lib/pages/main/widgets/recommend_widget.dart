@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:streamlt/components/constants.dart';
+import 'package:streamlt/models/movie.dart';
+import 'package:streamlt/pages/main/movie_page.dart';
 
 class RecommendWidget extends StatelessWidget {
-  const RecommendWidget({super.key});
+  final AsyncSnapshot<List<Movie>> snapshot;
+
+  const RecommendWidget({super.key, required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
+    final recommendedMovies = snapshot.data;
+
+    if (recommendedMovies == null || recommendedMovies.isEmpty) {
+      return Text(
+        'Error: ${snapshot.data}',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+      );
+    }
     return Column(
       children: [
+        const SizedBox(
+          height: 25,
+        ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
@@ -30,28 +49,47 @@ class RecommendWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 15,),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    'https://th.bing.com/th/id/OIP.Nuy2-f-oU2QUSZ8alJzX3gHaLH?pid=ImgDet&rs=1',
-                    height: 100,
-                    width: 150,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-            ],
+        const SizedBox(
+          height: 15,
+        ),
+        SizedBox(
+          height: 150,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: recommendedMovies.map((movie) {
+                return _buildUpcomingMovieCard(context, movie);
+              }).toList(),
+            ),
           ),
-        )
+        ),
       ],
+    );
+  }
+  Widget _buildUpcomingMovieCard(BuildContext context, Movie movie) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MoviePage(
+              movie: movie,
+              movieId: movie.id,
+            ),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }
