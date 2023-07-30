@@ -1,18 +1,34 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:streamlt/api/api.dart';
+import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/newmovie_widget.dart';
 import 'package:streamlt/pages/main/widgets/upcoming_widget.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
+
   //sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
-  
+
+  late Future<List<Movie>> upcomingMovies;
+
+  @override
+  void initState() {
+    super.initState();
+    upcomingMovies = Api().getUpcomingMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +46,8 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 18,
-                    horizontal: 10
-                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -56,7 +70,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: const Icon(
@@ -68,7 +81,6 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-
               Container(
                 height: 60,
                 padding: const EdgeInsets.all(10),
@@ -92,18 +104,38 @@ class HomePage extends StatelessWidget {
                           color: Colors.white,
                         ),
                         decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Search',
-                          hintStyle: TextStyle(color: Colors.white)
-                        ),
+                            border: InputBorder.none,
+                            hintText: 'Search',
+                            hintStyle: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30,),
-              const UpComingWidget(),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
+              FutureBuilder(
+                future: upcomingMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('error'),
+                    );
+                  } else if (snapshot.hasData) {
+                    return UpComingWidget(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               const NewMovieWidget(),
             ],
           ),

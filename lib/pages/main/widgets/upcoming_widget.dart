@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:streamlt/components/constants.dart';
+import 'package:streamlt/models/movie.dart';
 
 class UpComingWidget extends StatelessWidget {
-  const UpComingWidget({super.key});
+  final AsyncSnapshot<List<Movie>> snapshot;
+
+  const UpComingWidget({required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
+    final upcomingMovies = snapshot.data;
+
+    if (upcomingMovies == null || upcomingMovies.isEmpty) {
+      return const Center(
+        child: Text('No upcoming movies'),
+      );
+    }
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -30,28 +43,35 @@ class UpComingWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 15,),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    'https://th.bing.com/th/id/OIP.Nuy2-f-oU2QUSZ8alJzX3gHaLH?pid=ImgDet&rs=1',
-                    height: 180,
-                    width: 300,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-            ],
+        SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          height: 250,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: upcomingMovies.map((movie) {
+                return _buildUpcomingMovieCard(movie);
+              }).toList(),
+            ),
           ),
-        )
+        ),
       ],
+    );
+  }
+
+  Widget _buildUpcomingMovieCard(Movie movie) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
