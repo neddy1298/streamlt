@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamlt/pages/main/customnavbar.dart';
+import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({super.key});

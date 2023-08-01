@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
-import 'package:streamlt/pages/main/customnavbar.dart';
+import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_buttons.dart';
 import 'package:streamlt/pages/main/widgets/recommend_widget.dart';
 
