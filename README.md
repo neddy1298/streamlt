@@ -9,19 +9,20 @@
 
 # streamlt
 
-A new Flutter project.
+An Application for streaming movies.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-![Alt text](lib/images/app_image/home_ui.png)
-![Alt text](lib/images/app_image/login_ui.png)
+<div>
+  <div>
+    <h2>Login UI</h2>
+    <br>
+    <img src="lib/images/app_image/login_ui.png" width="200" />
+    <img src="lib/images/app_image/register_ui.png" width="200" />
+  </div>
+</div>
+<div>
+  <div>
+    <h2>Home UI</h2>
+    <br>
+    <img src="lib/images/app_image/home_ui.png" width="200" />
+  </div>
+</div>
