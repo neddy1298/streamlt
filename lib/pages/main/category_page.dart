@@ -1,152 +1,177 @@
 import 'package:flutter/material.dart';
-import 'package:streamlt/api/api.dart';
+import 'package:streamlt/api/api.dart'; // Import your Api class
+import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
-import 'package:streamlt/pages/main/widgets/customnavbar.dart';
+import 'package:streamlt/pages/main/movie_page.dart';
+import 'package:streamlt/pages/main/widgets/customnavbar.dart'; // Import your Movie class
 
-class CategoryPage extends StatelessWidget {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  late Future<List<Movie>> recommendedMovies;
+
+  @override
+  void initState() {
+    super.initState();
+    recommendedMovies = Api().getMovies('popular');
+  }
+
+  var categories = [
+    'New Release',
+    'Popular',
+    'Action',
+    'Drama',
+    'Adventure',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        // back to the previous page
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Discover',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              FutureBuilder<List<MovieCategory>>(
-                future: _fetchMovieCategories(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    final categories = snapshot.data ?? [];
-                    return Column(
-                      children: categories
-                          .map((category) => CategoryList(
-                                title: category.title,
-                                posterPath: category.movies.isNotEmpty
-                                    ? category.movies.first.poster_path
-                                    : '',
-                              ))
-                          .toList(),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: const CustomNavBar(),
-    );
-  }
-
-  Future<List<MovieCategory>> _fetchMovieCategories() async {
-    final latestMovies = await Api().getMovies('now_playing');
-    final popularMovies = await Api().getMovies('popular');
-    final topRatedMovies = await Api().getMovies('top_rated');
-    final upcomingMovies = await Api().getMovies('upcoming');
-
-    return [
-      MovieCategory(title: 'New Release', movies: latestMovies),
-      MovieCategory(title: 'Popular', movies: popularMovies),
-      MovieCategory(title: 'Top Rated', movies: topRatedMovies),
-      MovieCategory(title: 'Upcoming', movies: upcomingMovies),
-    ];
-  }
-}
-
-class MovieCategory {
-  final String title;
-  final List<Movie> movies;
-
-  MovieCategory({required this.title, required this.movies});
-}
-
-class CategoryList extends StatelessWidget {
-  const CategoryList({
-    Key? key,
-    required this.title,
-    required this.posterPath,
-  }) : super(key: key);
-
-  final String title;
-  final String posterPath;
-
-  @override
-  Widget build(BuildContext context) {
-    final imageUrl = 'https://image.tmdb.org/t/p/w500$posterPath';
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
+      body: FutureBuilder<List<Movie>>(
+        future: recommendedMovies,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            final movies = snapshot.data;
+            if (movies == null || movies.isEmpty) {
+              return Center(
+                child: Text('No movies in this category'),
+              );
+            }
+            return ListView(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    imageUrl,
-                    height: 70,
-                    width: 90,
-                    fit: BoxFit.fill,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // back to the previous page
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Discover',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Chip(
+                          label: Text(categories[index]),
+                          backgroundColor: const Color(0xFF343440),
+                          labelStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Popular Movies',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemCount: movies.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          '${Constants.imagePath}${movies[index].poster_path}'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  movies[index].title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: 23,
+                  height: 20,
                 ),
               ],
-            ),
-          ),
-        ],
+            );
+          }
+        },
       ),
+      bottomNavigationBar: const CustomNavBar(),
     );
   }
 }
