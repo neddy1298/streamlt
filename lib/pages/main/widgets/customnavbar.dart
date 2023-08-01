@@ -9,7 +9,7 @@ class CustomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65,
+      height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(
           color: Color(0xFF292B37),
@@ -37,7 +37,7 @@ class CustomNavBar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CategoryPage()),
+                MaterialPageRoute(builder: (context) => CategoryPage()),
               );
             },
             child: const Icon(
