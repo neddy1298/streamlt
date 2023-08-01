@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:streamlt/components/my_textfield.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 
 class ProfilePage extends StatefulWidget {

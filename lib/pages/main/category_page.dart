@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
-import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 
@@ -97,7 +96,7 @@ class MovieCategory {
 }
 
 class CategoryList extends StatelessWidget {
-  CategoryList({
+  const CategoryList({
     Key? key,
     required this.title,
     required this.posterPath,
@@ -127,7 +126,7 @@ class CategoryList extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Text(

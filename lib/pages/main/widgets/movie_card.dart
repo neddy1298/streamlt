@@ -8,7 +8,7 @@ class MovieCard extends StatelessWidget {
   final double? customSize;
   final AsyncSnapshot<List<Movie>> snapshot;
 
-  const MovieCard({
+  const MovieCard({super.key, 
     required this.title,
     required this.snapshot,
     this.customSize,
@@ -40,9 +40,9 @@ class MovieCard extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
+              const Text(
                 'See All',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white54,
                   fontSize: 16,
                 ),
@@ -55,7 +55,7 @@ class MovieCard extends StatelessWidget {
           height: customSize ?? 250, // Use customSize when provided, or default to 250
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: movies!.length,
+            itemCount: movies.length,
             itemBuilder: (context, index) {
               return _buildMovieCard(context, movies[index]);
             },
