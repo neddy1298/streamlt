@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streamlt/pages/main/category_page.dart';
 import 'package:streamlt/pages/main/home_page.dart';
+import 'package:streamlt/pages/main/profile_page.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({super.key});
@@ -11,12 +12,11 @@ class CustomNavBar extends StatelessWidget {
       height: 65,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(
-        color: Color(0xFF292B37),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
-        )
-      ),
+          color: Color(0xFF292B37),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          )),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -47,7 +47,7 @@ class CustomNavBar extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){},
+            onTap: () {},
             child: const Icon(
               Icons.favorite_border,
               size: 35,
@@ -55,7 +55,12 @@ class CustomNavBar extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
             child: const Icon(
               Icons.person,
               size: 35,

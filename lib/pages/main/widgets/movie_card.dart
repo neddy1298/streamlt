@@ -3,32 +3,38 @@ import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/movie_page.dart';
 
-class UpComingWidget extends StatelessWidget {
+class MovieCard extends StatelessWidget {
+  final String title;
+  final double? customSize;
   final AsyncSnapshot<List<Movie>> snapshot;
 
-  const UpComingWidget({super.key, required this.snapshot});
+  const MovieCard({
+    required this.title,
+    required this.snapshot,
+    this.customSize,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final upcomingMovies = snapshot.data;
+    final movies = snapshot.data;
 
-    if (upcomingMovies == null || upcomingMovies.isEmpty) {
-      return const Center(
-        child: Text('No upcoming movies'),
+    if (movies == null || movies.isEmpty) {
+      return Center(
+        child: Text('No $title'),
       );
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Upcoming Movies',
-                style: TextStyle(
+                title,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.w500,
@@ -36,7 +42,7 @@ class UpComingWidget extends StatelessWidget {
               ),
               Text(
                 'See All',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white54,
                   fontSize: 16,
                 ),
@@ -44,43 +50,40 @@ class UpComingWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         SizedBox(
-          height: 250,
-          child: SingleChildScrollView(
+          height: customSize ?? 250, // Use customSize when provided, or default to 250
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: upcomingMovies.map((movie) {
-                return _buildUpcomingMovieCard(context, movie);
-              }).toList(),
-            ),
+            itemCount: movies!.length,
+            itemBuilder: (context, index) {
+              return _buildMovieCard(context, movies[index]);
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget _buildUpcomingMovieCard(BuildContext context, Movie movie) {
+  Widget _buildMovieCard(BuildContext context, Movie movie) {
     return InkWell(
-        onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MoviePage(
-            movie: movie,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MoviePage(
+              movie: movie,
+              movieId: movie.id,
+            ),
           ),
-        ),
-      );
-    },
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+            '${Constants.imagePath}${movie.poster_path}',
             fit: BoxFit.cover,
           ),
         ),
