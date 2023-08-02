@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
 import 'package:streamlt/models/movie.dart';
+import 'package:streamlt/pages/main/widgets/big_movie_card.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_card.dart';
 
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<List<Movie>> nowPlayingMovies;
   final user = FirebaseAuth.instance.currentUser;
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> popularMovies;
@@ -21,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    nowPlayingMovies = Api().getMovies('now_playing');
     upcomingMovies = Api().getMovies('upcoming');
     popularMovies = Api().getMovies('popular');
     topRatedMovies = Api().getMovies('top_rated');
@@ -102,23 +105,22 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               FutureBuilder<List<Movie>>(
-                future: upcomingMovies,
+                future: nowPlayingMovies,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return MovieCard(
-                      title: 'Upcoming Movies',
+                    return BigMovieCard(
                       snapshot: snapshot,
                     );
                   }
                 },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               FutureBuilder<List<Movie>>(
                 future: popularMovies,
                 builder: (context, snapshot) {
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               FutureBuilder<List<Movie>>(
                 future: topRatedMovies,
                 builder: (context, snapshot) {
@@ -145,6 +147,22 @@ class _HomePageState extends State<HomePage> {
                   } else {
                     return MovieCard(
                       title: 'Top Rated Movies',
+                      snapshot: snapshot,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              FutureBuilder<List<Movie>>(
+                future: upcomingMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return MovieCard(
+                      title: 'Upcoming Movies',
                       snapshot: snapshot,
                     );
                   }
