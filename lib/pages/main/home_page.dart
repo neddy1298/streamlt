@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
 import 'package:streamlt/models/movie.dart';
-import 'package:streamlt/pages/main/full_movie_page.dart';
 import 'package:streamlt/pages/main/widgets/big_movie_card.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_card.dart';
