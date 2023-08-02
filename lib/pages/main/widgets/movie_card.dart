@@ -118,11 +118,33 @@ class MovieCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    '${movie.releaseDate.substring(0, 4)}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${movie.releaseDate.substring(0, 4)}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 16,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            '${movie.voteAverage}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
