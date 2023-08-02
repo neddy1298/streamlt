@@ -132,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                     return MovieCard(
                       title: 'Popular Movies',
                       snapshot: snapshot,
+                      type: 'popular',
                     );
                   }
                 },
@@ -148,6 +149,7 @@ class _HomePageState extends State<HomePage> {
                     return MovieCard(
                       title: 'Top Rated Movies',
                       snapshot: snapshot,
+                      type: 'top_rated',
                     );
                   }
                 },
@@ -164,6 +166,7 @@ class _HomePageState extends State<HomePage> {
                     return MovieCard(
                       title: 'Upcoming Movies',
                       snapshot: snapshot,
+                      type: 'upcoming',
                     );
                   }
                 },

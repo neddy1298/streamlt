@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/movie_page.dart';
+import 'package:streamlt/pages/main/full_movie_page.dart';
 
 class MovieCard extends StatelessWidget {
   final String title;
+  final String type;
   final double? customSize;
   final AsyncSnapshot<List<Movie>> snapshot;
 
@@ -12,6 +14,7 @@ class MovieCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.snapshot,
+    required this.type,
     this.customSize,
   }) : super(key: key);
 
@@ -40,11 +43,24 @@ class MovieCard extends StatelessWidget {
                   fontSize: 25,
                 ),
               ),
-              const Text(
-                'See All',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 16,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullMoviesPage(
+                        title: title,
+                        type: type,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'See All',
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],
@@ -52,7 +68,7 @@ class MovieCard extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SizedBox(
             height: customSize ?? 200,
             child: ListView.builder(
@@ -94,7 +110,7 @@ class MovieCard extends StatelessWidget {
                         '${Constants.imagePath}${movie.posterPath}'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.3), BlendMode.darken),
+                        Colors.black.withOpacity(0.1), BlendMode.darken),
                   ),
                 ),
                 width: 150,
@@ -118,24 +134,24 @@ class MovieCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${movie.releaseDate.substring(0, 4)}',
+                        movie.releaseDate.substring(0, 4),
                         style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             color: Colors.yellow,
                             size: 16,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
                             '${movie.voteAverage}',
                             style: const TextStyle(
