@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     // pop the loading circle
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
   
@@ -177,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     imagePath: 'lib/images/google-icon.png'
                   ),
 
-                  SizedBox(width: 25,),
+                  const SizedBox(width: 25,),
 
                   // apple button
                   SquareTile(
