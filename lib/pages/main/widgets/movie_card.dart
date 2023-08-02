@@ -8,7 +8,8 @@ class MovieCard extends StatelessWidget {
   final double? customSize;
   final AsyncSnapshot<List<Movie>> snapshot;
 
-  const MovieCard({super.key, 
+  const MovieCard({
+    super.key,
     required this.title,
     required this.snapshot,
     this.customSize,
@@ -35,9 +36,8 @@ class MovieCard extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.white54,
                   fontSize: 25,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               const Text(
@@ -51,14 +51,17 @@ class MovieCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          height: customSize ?? 250, // Use customSize when provided, or default to 250
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: movies.length,
-            itemBuilder: (context, index) {
-              return _buildMovieCard(context, movies[index]);
-            },
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+            height: customSize ?? 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                return _buildMovieCard(context, movies[index]);
+              },
+            ),
           ),
         ),
       ],
@@ -79,9 +82,9 @@ class MovieCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(18),
           child: Image.network(
             '${Constants.imagePath}${movie.posterPath}',
             fit: BoxFit.cover,
