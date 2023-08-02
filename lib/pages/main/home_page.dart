@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
 import 'package:streamlt/models/movie.dart';
+import 'package:streamlt/pages/main/full_movie_page.dart';
 import 'package:streamlt/pages/main/widgets/big_movie_card.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 import 'package:streamlt/pages/main/widgets/movie_card.dart';
+import 'package:streamlt/pages/main/widgets/search_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> topRatedMovies;
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -92,9 +95,20 @@ class _HomePageState extends State<HomePage> {
                       width: 300,
                       margin: const EdgeInsets.only(left: 5),
                       child: TextFormField(
+                        controller: searchController,
                         style: const TextStyle(
                           color: Colors.white,
                         ),
+                        onFieldSubmitted: (value) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchCard(
+                                query: value,
+                              ),
+                            ),
+                          );
+                        },
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search',
