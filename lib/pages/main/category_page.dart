@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart'; // Import your Api class
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
+import 'package:streamlt/pages/main/movie_page.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart'; // Import your Movie class
 
 class CategoryPage extends StatefulWidget {
@@ -123,7 +124,17 @@ class _CategoryPageState extends State<CategoryPage> {
                     itemCount: movies.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MoviePage(
+                                movie: movies[index],
+                                movieId: movies[index].id,
+                              ),
+                            ),
+                          );
+                        },
                         child: Card(
                           color: Colors.transparent,
                           elevation: 0,
