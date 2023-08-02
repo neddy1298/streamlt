@@ -83,7 +83,7 @@ class MovieCard extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            '${Constants.imagePath}${movie.poster_path}',
+            '${Constants.imagePath}${movie.posterPath}',
             fit: BoxFit.cover,
           ),
         ),

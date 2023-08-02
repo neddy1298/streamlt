@@ -13,12 +13,8 @@ class RecommendWidget extends StatelessWidget {
     final recommendedMovies = snapshot.data;
 
     if (recommendedMovies == null || recommendedMovies.isEmpty) {
-      return Text(
-        'Error: ${snapshot.data}',
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-        ),
+      return const Text(
+        '',
       );
     }
     return Column(
@@ -67,6 +63,7 @@ class RecommendWidget extends StatelessWidget {
       ],
     );
   }
+
   Widget _buildUpcomingMovieCard(BuildContext context, Movie movie) {
     return InkWell(
       onTap: () {
@@ -85,7 +82,7 @@ class RecommendWidget extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            '${Constants.imagePath}${movie.poster_path}', // Use the constructed image URL
+            '${Constants.imagePath}${movie.posterPath}', // Use the constructed image URL
             fit: BoxFit.cover,
           ),
         ),

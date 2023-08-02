@@ -33,7 +33,7 @@ class _MoviePageState extends State<MoviePage> {
           Opacity(
             opacity: 0.4,
             child: Image.network(
-              '${Constants.imagePath}${widget.movie.backdrop_path}',
+              '${Constants.imagePath}${widget.movie.backdropPath}',
               height: 250,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -94,7 +94,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
-                              '${Constants.imagePath}${widget.movie.poster_path}',
+                              '${Constants.imagePath}${widget.movie.posterPath}',
                               height: 250,
                               width: 180,
                             ),
@@ -155,7 +155,7 @@ class _MoviePageState extends State<MoviePage> {
                           height: 15,
                         ),
                         Text(
-                          widget.movie.overview,
+                          widget.movie.overview ?? 'No overview available.',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,

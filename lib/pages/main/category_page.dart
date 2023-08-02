@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart'; // Import your Api class
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
-import 'package:streamlt/pages/main/movie_page.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart'; // Import your Movie class
 
 class CategoryPage extends StatefulWidget {
@@ -36,7 +35,7 @@ class _CategoryPageState extends State<CategoryPage> {
         future: recommendedMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -46,7 +45,7 @@ class _CategoryPageState extends State<CategoryPage> {
           } else {
             final movies = snapshot.data;
             if (movies == null || movies.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('No movies in this category'),
               );
             }
@@ -137,7 +136,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          '${Constants.imagePath}${movies[index].poster_path}'),
+                                          '${Constants.imagePath}${movies[index].posterPath}'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),

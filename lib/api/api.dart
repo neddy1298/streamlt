@@ -22,10 +22,21 @@ class Api {
         'https://api.themoviedb.org/3/movie/$movieId/recommendations?api_key=${Constants.apiKey}'));
     if (response.statusCode == 200) {
       final decodedData = jsonDecode(response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      final List<Movie> movies =
+          decodedData.map((movie) => Movie.fromJson(movie)).toList();
+
+      // Remove movies with any null value in any field
+      movies.removeWhere((movie) => movieContainsNullValues(movie));
+
+      return movies;
     } else {
       throw Exception('Something happened');
     }
+  }
+
+  bool movieContainsNullValues(Movie movie) {
+    // Check if any field in the Movie object is null
+    return movie.toJson().values.any((value) => value == null);
   }
 
   Future<Movie> getMovie(String movieType) async {
