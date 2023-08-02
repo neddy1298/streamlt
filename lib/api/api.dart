@@ -49,4 +49,21 @@ class Api {
       throw Exception('Something happened');
     }
   }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final response = await http.get(Uri.parse(
+        'https://api.themoviedb.org/3/search/movie?query=$query&api_key=${Constants.apiKey}'));
+    if (response.statusCode == 200) {
+      final decodedData = jsonDecode(response.body)['results'] as List;
+      final List<Movie> movies =
+          decodedData.map((movie) => Movie.fromJson(movie)).toList();
+
+      // Remove movies with any null value in any field
+      movies.removeWhere((movie) => movieContainsNullValues(movie));
+
+      return movies;
+    } else {
+      throw Exception('Something happened');
+    }
+  }
 }
