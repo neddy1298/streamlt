@@ -58,7 +58,7 @@ class _BigMovieCardState extends State<BigMovieCard> {
     final movies = widget.snapshot.data;
 
     if (movies == null || movies.isEmpty) {
-      return Center(
+      return const Center(
         child: Text('No'),
       );
     }
@@ -66,14 +66,14 @@ class _BigMovieCardState extends State<BigMovieCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'For you',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white54,
                   fontSize: 20,
                 ),
@@ -101,7 +101,7 @@ class _BigMovieCardState extends State<BigMovieCard> {
             },
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         SizedBox(
@@ -145,7 +145,7 @@ class PageIndicator extends AnimatedWidget {
   final PageController controller;
   final int itemCount;
 
-  PageIndicator({required this.controller, required this.itemCount})
+  const PageIndicator({super.key, required this.controller, required this.itemCount})
       : super(listenable: controller);
 
   @override
