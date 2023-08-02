@@ -24,5 +24,7 @@ An Application for streaming movies.
     <h2>Home UI</h2>
     <br>
     <img src="lib/images/app_image/home_ui.png" width="200" />
+    <img src="lib/images/app_image/discover_ui.png" width="200" />
+    <img src="lib/images/app_image/search_ui.png" width="200" />
   </div>
 </div>
