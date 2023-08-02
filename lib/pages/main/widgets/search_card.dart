@@ -43,8 +43,56 @@ class _SearchCardState extends State<SearchCard> {
           } else {
             final movies = snapshot.data;
             if (movies == null || movies.isEmpty) {
-              return const Center(
-                child: Text('No movies in this category'),
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        // back to the previous page
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Search Results',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'result for "${widget.query}"',
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            "No movies found in the database",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               );
             }
             return ListView(
@@ -67,9 +115,9 @@ class _SearchCardState extends State<SearchCard> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Text(
+                      const Text(
                         'Search Results',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.w500,
