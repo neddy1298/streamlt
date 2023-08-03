@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Hello ${user?.email ?? ''}",
+                          "Hello ${user?.displayName ?? ''}",
                           style: const TextStyle(
                             fontSize: 20.0,
                             color: Colors.white,
