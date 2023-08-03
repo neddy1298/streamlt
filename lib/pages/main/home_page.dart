@@ -25,10 +25,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    nowPlayingMovies = Api().getMovies('now_playing');
-    upcomingMovies = Api().getMovies('upcoming');
-    popularMovies = Api().getMovies('popular');
-    topRatedMovies = Api().getMovies('top_rated');
+    nowPlayingMovies = Api().getMovies('movie/now_playing');
+    upcomingMovies = Api().getMovies('movie/upcoming');
+    popularMovies = Api().getMovies('movie/popular');
+    topRatedMovies = Api().getMovies('movie/top_rated');
   }
 
   @override

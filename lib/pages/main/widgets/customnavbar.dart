@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamlt/pages/main/category_page.dart';
+import 'package:streamlt/pages/main/discover_page.dart';
 import 'package:streamlt/pages/main/home_page.dart';
 import 'package:streamlt/pages/main/profile_page.dart';
 
