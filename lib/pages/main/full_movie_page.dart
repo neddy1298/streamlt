@@ -25,7 +25,7 @@ class _FullMoviesPageState extends State<FullMoviesPage> {
   @override
   void initState() {
     super.initState();
-    getMovies = Api().getMovies(widget.type);
+    getMovies = Api().getMovies('movie/${widget.type}');
   }
 
   @override
