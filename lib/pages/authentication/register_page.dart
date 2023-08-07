@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/components/my_button.dart';
@@ -39,6 +40,12 @@ class _LoginPageState extends State<RegisterPage> {
           email: emailController.text,
           password: passwordController.text,
         );
+
+        addUserDetails(
+          nameController.text.trim(),
+          passwordController.text.trim(),
+          emailController.text.trim(),
+        );
       } else {
         //  show error message, passwords
         Navigator.pop(context);
@@ -46,12 +53,19 @@ class _LoginPageState extends State<RegisterPage> {
       }
       // pop the loading circle
     } on FirebaseAuthException catch (e) {
-      // pop the loading circle
-      Navigator.pop(context);
-
       // Wrong email or password
       showErrorMessage(e.code);
     }
+    // pop the loading circle
+    Navigator.pop(context);
+  }
+
+  Future addUserDetails(String username, String password, String email) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': nameController.text,
+      'email': emailController.text,
+      'password': passwordController.text,
+    });
   }
 
   // error message to user
@@ -84,12 +98,6 @@ class _LoginPageState extends State<RegisterPage> {
                 height: 25,
               ),
 
-              //  logo
-              const Icon(
-                Icons.lock,
-                size: 50,
-              ),
-
               const SizedBox(
                 height: 25,
               ),
@@ -115,7 +123,7 @@ class _LoginPageState extends State<RegisterPage> {
               ),
 
               const SizedBox(
-                height: 25,
+                height: 10,
               ),
 
               //  Email textfield
