@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
 import 'package:streamlt/components/constants.dart';
@@ -10,7 +12,8 @@ class MoviePage extends StatefulWidget {
   final Movie movie;
   final int movieId;
 
-  const MoviePage({super.key, required this.movie, required this.movieId});
+  const MoviePage({Key? key, required this.movie, required this.movieId})
+      : super(key: key);
 
   @override
   State<MoviePage> createState() => _MoviePageState();
@@ -18,11 +21,80 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   late Future<List<Movie>> recommendedMovies;
+  final user = FirebaseAuth.instance.currentUser;
+  bool isFavorited = false;
 
   @override
   void initState() {
     super.initState();
     recommendedMovies = Api().getRecommendedMovies(widget.movieId);
+    checkFavoritedStatus();
+  }
+
+  void addFavMovie() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    final favSnapshot = await FirebaseFirestore.instance
+        .collection('favorite')
+        .where('userId', isEqualTo: user?.uid)
+        .where('movieId', arrayContains: widget.movieId)
+        .get();
+
+    if (favSnapshot.docs.isEmpty) {
+      await favMovieDetails();
+    } else {
+      final favId = favSnapshot.docs.first.id;
+      await FirebaseFirestore.instance
+          .collection('favorite')
+          .doc(favId)
+          .update({
+        'movieId': FieldValue.arrayRemove([widget.movieId]),
+      });
+    }
+
+    Navigator.pop(context);
+    checkFavoritedStatus(); // Update favorited status
+  }
+
+  Future<void> favMovieDetails() async {
+    final favSnapshot = await FirebaseFirestore.instance
+        .collection('favorite')
+        .where('userId', isEqualTo: user?.uid)
+        .get();
+
+    if (favSnapshot.docs.isEmpty) {
+      await FirebaseFirestore.instance.collection('favorite').add({
+        'userId': user?.uid,
+        'movieId': [widget.movieId],
+      });
+    } else {
+      final favId = favSnapshot.docs.first.id;
+      await FirebaseFirestore.instance
+          .collection('favorite')
+          .doc(favId)
+          .update({
+        'movieId': FieldValue.arrayUnion([widget.movieId]),
+      });
+    }
+  }
+
+  void checkFavoritedStatus() async {
+    final favSnapshot = await FirebaseFirestore.instance
+        .collection('favorite')
+        .where('userId', isEqualTo: user?.uid)
+        .where('movieId', arrayContains: widget.movieId)
+        .get();
+
+    setState(() {
+      isFavorited = favSnapshot.docs.isNotEmpty;
+    });
   }
 
   @override
@@ -60,11 +132,11 @@ class _MoviePageState extends State<MoviePage> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.favorite_border,
+                          onTap: addFavMovie,
+                          child: Icon(
+                            isFavorited
+                                ? Icons.favorite
+                                : Icons.favorite_border,
                             color: Colors.white,
                             size: 30,
                           ),
@@ -127,7 +199,10 @@ class _MoviePageState extends State<MoviePage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const MovieButtons(),
+                  MovieButtons(
+                    favMovie: addFavMovie,
+                    isFavorited: isFavorited,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 10),
