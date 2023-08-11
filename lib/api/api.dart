@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:http/http.dart' as http;
@@ -68,6 +70,43 @@ class Api {
     if (response.statusCode == 200) {
       final decodedData = jsonDecode(response.body)['results'] as List;
       return Movie.fromJson(decodedData[0]);
+    } else {
+      throw Exception('Something happened');
+    }
+  }
+
+  Future<List<Movie>> getFavoriteMovies() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return [];
+    }
+
+    final favSnapshot = await FirebaseFirestore.instance
+        .collection('favorite')
+        .where('userId', isEqualTo: user.uid)
+        .get();
+
+    if (favSnapshot.docs.isEmpty) {
+      return [];
+    }
+
+    final List<int> movieIds = favSnapshot.docs.first['movieId'].cast<int>();
+
+    final List<Movie> favoriteMovies = await Future.wait(
+      movieIds.map((movieId) => getMovieById(movieId)),
+    );
+
+    return favoriteMovies;
+  }
+
+  Future<Movie> getMovieById(int movieId) async {
+    final response = await http.get(
+      Uri.parse('$getMovieUrl/movie/$movieId?api_key=${Constants.apiKey}'),
+    );
+
+    if (response.statusCode == 200) {
+      final decodedData = jsonDecode(response.body);
+      return Movie.fromJson(decodedData);
     } else {
       throw Exception('Something happened');
     }
