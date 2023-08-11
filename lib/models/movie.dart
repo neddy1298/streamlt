@@ -45,7 +45,9 @@ class Movie {
       posterPath: json['poster_path'] as String?,
       mediaType:
           json['media_type'] != null ? json['media_type'] as String? : '',
-      genreIds: List<int>.from(json['genre_ids']),
+      genreIds: json['genre_ids'] != null
+          ? List<int>.from(json['genre_ids'])
+          : <int>[],
       popularity: json['popularity'].toDouble(),
       releaseDate: json['release_date'] as String,
       video: json['video'] as bool,
