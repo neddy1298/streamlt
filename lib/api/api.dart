@@ -6,7 +6,7 @@ import 'package:streamlt/models/movie.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const getMovieUrl = 'https://api.themoviedb.org/3/';
+  static const getMovieUrl = 'https://api.themoviedb.org/3';
 
   Future<List<Movie>> getMovies(String movieType) async {
     final response = await http
