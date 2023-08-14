@@ -8,11 +8,11 @@
 
 ### Done task
 
-<s>1. Create a login page where users can sign up or log in to their account.</s>
-<s>2. Create a dashboard where users can browse movies and TV shows.</s>
-<s>3. Implement a search feature that allows users to search for movies and TV shows by title, genre, or actor.</s>
-<s>4. Create a details page for each movie or TV show that displays information such as the plot summary, </s>cast, and crew.
-<s>5. Use a public movie API such as TMDB1 to get movie data such as titles, descriptions, posters, and trailers.</s>
+<s>1. Create a login page where users can sign up or log in to their account.</s><br>
+<s>2. Create a dashboard where users can browse movies and TV shows.</s><br>
+<s>3. Implement a search feature that allows users to search for movies and TV shows by title, genre, or actor.</s><br>
+<s>4. Create a details page for each movie or TV show that displays information such as the plot summary, </s>cast, and crew.<br>
+<s>5. Use a public movie API such as TMDB1 to get movie data such as titles, descriptions, posters, and trailers.</s><br>
 
 # streamlt
 
