@@ -11,10 +11,10 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<RegisterPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // text editing controller
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -23,49 +23,39 @@ class _LoginPageState extends State<RegisterPage> {
 
   // sign user in method
   void signUserUp() async {
-    // show loading circle
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-
     // try creating the user
     try {
       // check if password is confirmed
       if (passwordController.text == confirmpasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
+        final authResult =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
 
-        addUserDetails(
-          nameController.text.trim(),
-          passwordController.text.trim(),
-          emailController.text.trim(),
-        );
+        final currentUser = authResult.user;
+
+        if (currentUser != null) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(currentUser.uid)
+              .set(
+            {
+              'name': nameController.text.trim(),
+              'email': emailController.text.trim(),
+              'createdAt': FieldValue.serverTimestamp(),
+            },
+          );
+        }
       } else {
-        //  show error message, passwords
-        Navigator.pop(context);
-        showErrorMessage("Password don't match!");
+        showErrorMessage("Password doesn't match!");
       }
+
       // pop the loading circle
     } on FirebaseAuthException catch (e) {
       // Wrong email or password
       showErrorMessage(e.code);
     }
-    // pop the loading circle
-    Navigator.pop(context);
-  }
-
-  Future addUserDetails(String username, String password, String email) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'name': nameController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-    });
   }
 
   // error message to user
