@@ -111,4 +111,11 @@ class Api {
       throw Exception('Something happened');
     }
   }
+
+  Future<DocumentSnapshot> getUser(String userUid) async {
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(userUid).get();
+
+    return userSnapshot;
+  }
 }
