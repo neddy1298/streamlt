@@ -51,18 +51,18 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Hello ${user?.displayName ?? 'User'}",
-                          style: const TextStyle(
+                          "Welcome",
+                          style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const Text(
+                        Text(
                           "what to watch?",
                           style: TextStyle(
                             color: Colors.white54,
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(30),
                       child: IconButton(
                         onPressed: _signOut,
-                        icon: Icon(Icons.account_circle),
+                        icon: const Icon(Icons.account_circle),
                         iconSize: 50,
                         color: Colors.white,
                       ),
