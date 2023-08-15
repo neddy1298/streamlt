@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:streamlt/pages/main/category_page.dart';
+import 'package:streamlt/pages/main/discover_page.dart';
+import 'package:streamlt/pages/main/favorite_page.dart';
 import 'package:streamlt/pages/main/home_page.dart';
 import 'package:streamlt/pages/main/profile_page.dart';
 
@@ -47,7 +48,12 @@ class CustomNavBar extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FavoritesPage()),
+              );
+            },
             child: const Icon(
               Icons.favorite_border,
               size: 35,

@@ -1,3 +1,4 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<Movie>> nowPlayingMovies;
   final user = FirebaseAuth.instance.currentUser;
+  // final userData = FirebaseFirestore.instance.collection('users').get();
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> topRatedMovies;
@@ -25,10 +27,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    nowPlayingMovies = Api().getMovies('now_playing');
-    upcomingMovies = Api().getMovies('upcoming');
-    popularMovies = Api().getMovies('popular');
-    topRatedMovies = Api().getMovies('top_rated');
+    nowPlayingMovies = Api().getMovies('movie/now_playing');
+    upcomingMovies = Api().getMovies('movie/upcoming');
+    popularMovies = Api().getMovies('movie/popular');
+    topRatedMovies = Api().getMovies('movie/top_rated');
+  }
+
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -45,18 +51,18 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Hello ${user?.email ?? ''}",
-                          style: const TextStyle(
+                          "Welcome",
+                          style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const Text(
+                        Text(
                           "what to watch?",
                           style: TextStyle(
                             color: Colors.white54,
@@ -66,9 +72,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(30),
-                      child: const Icon(
-                        Icons.account_circle,
-                        size: 50,
+                      child: IconButton(
+                        onPressed: _signOut,
+                        icon: const Icon(Icons.account_circle),
+                        iconSize: 50,
                         color: Colors.white,
                       ),
                     )

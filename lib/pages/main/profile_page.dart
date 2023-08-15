@@ -1,19 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:streamlt/pages/main/widgets/customnavbar.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // user
   final currentUser = FirebaseAuth.instance.currentUser!;
+  late Future<DocumentSnapshot> userSnapshot;
 
-  final emailController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    userSnapshot = getUser();
+  }
+
+  Future<DocumentSnapshot> getUser() async {
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .get();
+
+    return userSnapshot;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     InkWell(
                       onTap: () {
-                        //  back to the page
                         Navigator.pop(context);
                       },
                       child: const Icon(
@@ -40,9 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         size: 30,
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 30),
                     const Text(
                       'Profile Page',
                       style: TextStyle(
@@ -51,9 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(
-                      height: 50,
-                    ),
+                    const SizedBox(height: 50),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -62,35 +71,41 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.white,
                           size: 70,
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'My Details',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextBox(
-                                title: 'username',
-                                currentUser: currentUser.displayName!,
-                              ),
-                              TextBox(
-                                title: 'email',
-                                currentUser: currentUser.email!,
-                              ),
-                            ],
-                          ),
+                        const SizedBox(height: 30),
+                        FutureBuilder<DocumentSnapshot>(
+                          future: userSnapshot,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return const Text('Error fetching user data');
+                            } else if (!snapshot.hasData) {
+                              return const Text('No data available');
+                            } else {
+                              final userData =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              return Column(
+                                children: [
+                                  TextBox(
+                                    title: 'username',
+                                    currentUser: userData['name'],
+                                    onPressed: () {
+                                      _showEditPopup('name', userData['name']);
+                                    },
+                                  ),
+                                  TextBox(
+                                    title: 'email',
+                                    currentUser: userData['email'],
+                                    onPressed: () {
+                                      _showEditPopup(
+                                          'email', userData['email']);
+                                    },
+                                  ),
+                                ],
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -104,17 +119,87 @@ class _ProfilePageState extends State<ProfilePage> {
       bottomNavigationBar: const CustomNavBar(),
     );
   }
+
+  void _showEditPopup(String field, String currentValue) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String editedValue = currentValue;
+        return AlertDialog(
+          title: Text('Edit $field'),
+          content: TextField(
+            onChanged: (value) {
+              editedValue = value;
+            },
+            controller: TextEditingController(text: currentValue),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (field == 'email') {
+                  // Update email in FirebaseAuth
+                  await currentUser.updateEmail(editedValue);
+                }
+
+                // Update email in Firestore
+                await updateUserValue(currentUser.uid, field, editedValue);
+
+                Navigator.of(context).pop();
+
+                // Show a success alert
+                _showSuccessAlert(context);
+
+                setState(() {
+                  // Rebuild the widget tree to reflect the updated data
+                  userSnapshot = getUser();
+                });
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSuccessAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Data has been updated.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class TextBox extends StatelessWidget {
   const TextBox({
-    super.key,
+    Key? key,
     required this.currentUser,
     required this.title,
-  });
+    required this.onPressed,
+  }) : super(key: key);
 
   final String currentUser;
   final String title;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -138,19 +223,22 @@ class TextBox extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.settings,
-                ),
+                onPressed: onPressed,
+                icon: const Icon(Icons.settings),
                 color: Colors.grey[400],
               ),
             ],
           ),
-          Text(
-            currentUser,
-          ),
+          Text(currentUser),
         ],
       ),
     );
   }
+}
+
+Future<void> updateUserValue(
+    String userUid, String field, String newValue) async {
+  await FirebaseFirestore.instance.collection('users').doc(userUid).update({
+    field: newValue,
+  });
 }

@@ -1,38 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:streamlt/api/api.dart';
+import 'package:streamlt/api/api.dart'; // Import your Api class
 import 'package:streamlt/components/constants.dart';
 import 'package:streamlt/models/movie.dart';
 import 'package:streamlt/pages/main/movie_page.dart';
-import 'package:streamlt/pages/main/widgets/customnavbar.dart';
+import 'package:streamlt/pages/main/widgets/customnavbar.dart'; // Import your Movie class
 
-class FullMoviesPage extends StatefulWidget {
-  final String type;
-  final String title;
-
-  const FullMoviesPage({
-    Key? key,
-    required this.type,
-    required this.title,
-  }) : super(key: key);
+class FavoritesPage extends StatefulWidget {
+  const FavoritesPage({Key? key}) : super(key: key);
 
   @override
-  State<FullMoviesPage> createState() => _FullMoviesPageState();
+  State<FavoritesPage> createState() => _FavoritesPageState();
 }
 
-class _FullMoviesPageState extends State<FullMoviesPage> {
-  late Future<List<Movie>> getMovies;
+class _FavoritesPageState extends State<FavoritesPage> {
+  late Future<List<Movie>> discoverMovies;
 
   @override
   void initState() {
     super.initState();
-    getMovies = Api().getMovies('movie/${widget.type}');
+    discoverMovies = Api().getFavoriteMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Movie>>(
-        future: getMovies,
+        future: discoverMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -69,15 +62,23 @@ class _FullMoviesPageState extends State<FullMoviesPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        widget.title,
-                        style: const TextStyle(
+                      const Text(
+                        'Favorite Movies',
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Discover movies you like',
+                    style: TextStyle(fontSize: 18, color: Colors.white54),
                   ),
                 ),
                 const SizedBox(height: 20),

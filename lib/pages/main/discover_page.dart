@@ -13,12 +13,12 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  late Future<List<Movie>> recommendedMovies;
+  late Future<List<Movie>> discoverMovies;
 
   @override
   void initState() {
     super.initState();
-    recommendedMovies = Api().getMovies('popular');
+    discoverMovies = Api().getMovies('discover/movie');
   }
 
   var categories = [
@@ -33,7 +33,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Movie>>(
-        future: recommendedMovies,
+        future: discoverMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -104,8 +104,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Popular Movies',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    'Explore movies you like',
+                    style: TextStyle(fontSize: 18, color: Colors.white54),
                   ),
                 ),
                 const SizedBox(height: 20),
