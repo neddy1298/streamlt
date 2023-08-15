@@ -85,7 +85,8 @@ class _BigMovieCardState extends State<BigMovieCard> {
           height: 10.0,
         ),
         SizedBox(
-          height: 300,
+          height: 200,
+          width: 300,
           child: PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.horizontal,
@@ -145,7 +146,8 @@ class PageIndicator extends AnimatedWidget {
   final PageController controller;
   final int itemCount;
 
-  const PageIndicator({super.key, required this.controller, required this.itemCount})
+  const PageIndicator(
+      {super.key, required this.controller, required this.itemCount})
       : super(listenable: controller);
 
   @override
