@@ -20,13 +20,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState(){
-    //  hide statusbar and below buttons
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  // @override
+  // void initState(){
+  //   //  hide statusbar and below buttons
+  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
