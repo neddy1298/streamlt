@@ -1,10 +1,13 @@
 # Dev NOTES:
 
+### Error to Fix
+
+1. User page when using google register
+
 ### On Going
 
 0. Fix some errors and bugs
 1. Implement a video player that allows users to stream movies and TV shows.
-2. Update user details
 99. Add some features
 
 ### Done task
@@ -14,6 +17,7 @@
 3. Implement a search feature that allows users to search for movies and TV shows by title, genre, or actor.
 4. Create a details page for each movie or TV show that displays information such as the plot summary, cast, and crew.
 5. Use a public movie API such as TMDB1 to get movie data such as titles, descriptions, posters, and trailers.
+6. Update user details
 
 # streamlt
 
