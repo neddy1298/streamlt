@@ -85,8 +85,7 @@ class _BigMovieCardState extends State<BigMovieCard> {
           height: 10.0,
         ),
         SizedBox(
-          height: 200,
-          width: 300,
+          height: 250,
           child: PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.horizontal,
