@@ -4,20 +4,22 @@ import 'package:streamlt/pages/main/home_page.dart';
 import 'package:streamlt/pages/authentication/login_or_register_page.dart';
 
 class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+  AuthPage({Key? key}) : super(key: key);
+
+  final authStream = FirebaseAuth.instance.authStateChanges();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: authStream,
         builder: (context, snaphot) {
           //  user is logged in
-          if (snaphot.hasData){
+          if (snaphot.hasData) {
             return const HomePage();
           }
           //  user is NOT logged in
-          else{
+          else {
             return const LoginOrRegisterPage();
           }
         },

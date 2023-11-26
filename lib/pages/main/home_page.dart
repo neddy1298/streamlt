@@ -1,4 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streamlt/api/api.dart';
@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<Movie>> nowPlayingMovies;
   final user = FirebaseAuth.instance.currentUser;
-  // final userData = FirebaseFirestore.instance.collection('users').get();
+  final userData = FirebaseFirestore.instance.collection('users').get();
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> topRatedMovies;

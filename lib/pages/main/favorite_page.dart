@@ -96,14 +96,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     ),
                     itemCount: movies.length,
                     itemBuilder: (context, index) {
+                      final movie = movies[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => MoviePage(
-                                movie: movies[index],
-                                movieId: movies[index].id,
+                                movie: movie,
+                                movieId: movie.id,
                               ),
                             ),
                           );
@@ -120,7 +121,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          '${Constants.imagePath}${movies[index].posterPath}'),
+                                          '${Constants.imagePath}${movie.posterPath}'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -131,7 +132,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: Text(
-                                  movies[index].title,
+                                  movie.title,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,

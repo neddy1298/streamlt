@@ -11,21 +11,9 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // @override
-  // void initState(){
-  //   //  hide statusbar and below buttons
-  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
-  //   super.initState();
-  // }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +21,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: const Color(0xFF0F111D),
       ),
       debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
+      home: AuthPage(),
     );
   }
 }
