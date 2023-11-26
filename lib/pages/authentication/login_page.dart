@@ -20,39 +20,37 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   // sign user in method
-  void signUserIn() async{
-
+  void signUserIn() async {
     // show loading circle
     showDialog(
         context: context,
-        builder: (context){
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-    });
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
 
     // try sign in
-    try{
-
+    try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e){
-
+      // pop the loading circle
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // pop the loading circle
+      Navigator.pop(context);
       // Wrong email or password
       showErrorMessage(e.code);
     }
-
-    // pop the loading circle
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
   }
-  
-  void showErrorMessage(String message){
-    showDialog(
+
+  void showErrorMessage(String message) {
+    if (mounted) {
+      showDialog(
         context: context,
-        builder: (context){
+        builder: (context) {
           return AlertDialog(
             backgroundColor: Colors.deepPurple,
             title: Center(
@@ -62,7 +60,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-        });
+        },
+      );
+    }
   }
 
   @override
@@ -74,7 +74,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
 
               //  logo
               const Icon(
@@ -82,7 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                 size: 100,
               ),
 
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
 
               //  welcome back, you've been missed!
               Text(
@@ -93,7 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              const SizedBox(height: 25,),
+              const SizedBox(
+                height: 25,
+              ),
 
               //  Email textfield
               MyTextField(
@@ -102,7 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: false,
               ),
 
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
 
               // password textfield
               MyTextField(
@@ -111,7 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
 
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
 
               //  forgot password?
               Padding(
@@ -126,14 +136,18 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 25,),
+              const SizedBox(
+                height: 25,
+              ),
 
               // sign in button
               MyButton(
                 text: 'Sign In',
                 onTap: signUserIn,
               ),
-              const SizedBox(height: 25,),
+              const SizedBox(
+                height: 25,
+              ),
               //  or continue with
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -145,28 +159,27 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.grey[400],
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child:Text(
+                      child: Text(
                         'Or continue with',
                         style: TextStyle(
                           color: Colors.grey[700],
                         ),
                       ),
                     ),
-
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
                         color: Colors.grey[400],
                       ),
-
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
 
               //  google + apple sign in buttons
               Row(
@@ -174,20 +187,21 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   //  google button
                   SquareTile(
-                    onTap: () => AuthService().signInWithGoogle(),
-                    imagePath: 'lib/images/google-icon.png'
-                  ),
+                      onTap: () => AuthService().signInWithGoogle(),
+                      imagePath: 'lib/images/google-icon.png'),
 
-                  const SizedBox(width: 25,),
+                  const SizedBox(
+                    width: 25,
+                  ),
 
                   // apple button
                   SquareTile(
-                      onTap: () {},
-                      imagePath: 'lib/images/apple-icon.png'
-                  ),
+                      onTap: () {}, imagePath: 'lib/images/apple-icon.png'),
                 ],
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
 
               //  not a member? register now
               Row(
@@ -195,9 +209,11 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Not a member?',
-                    style: TextStyle(
-                        color: Colors.grey[700]),),
-                  const SizedBox(width: 4,),
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(
@@ -210,7 +226,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               )
-
             ],
           ),
         ),
