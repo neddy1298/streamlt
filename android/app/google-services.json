@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "414874407085",
+    "project_id": "streamlt",
+    "storage_bucket": "streamlt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414874407085:android:194e54dbcd009b979cf624",
+        "android_client_info": {
+          "package_name": "com.example.streamlt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414874407085-magjij6eosicageufbh2sqv4tcpgfpo1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-dlIKiuIp16BFirmbAfpxxBjR4ASuz6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414874407085-magjij6eosicageufbh2sqv4tcpgfpo1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
