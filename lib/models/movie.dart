@@ -41,13 +41,10 @@ class Movie {
       title: json['title'] as String,
       originalLanguage: json['original_language'] as String,
       originalTitle: json['original_title'] as String,
-      overview: json['overview'] != null ? json['overview'] as String? : '',
+      overview: json['overview'] != null ? json['overview'] as String : 'No overview available',
       posterPath: json['poster_path'] as String?,
-      mediaType:
-          json['media_type'] != null ? json['media_type'] as String? : '',
-      genreIds: json['genre_ids'] != null
-          ? List<int>.from(json['genre_ids'])
-          : <int>[],
+      mediaType: json['media_type'] as String? ?? '', // Replace with appropriate default
+      genreIds: json['genre_ids'] != null ? List<int>.from(json['genre_ids']) : <int>[],
       popularity: json['popularity'].toDouble(),
       releaseDate: json['release_date'] as String,
       video: json['video'] as bool,
@@ -55,6 +52,7 @@ class Movie {
       voteCount: json['vote_count'] as int,
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {
