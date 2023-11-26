@@ -15,7 +15,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<Movie>> nowPlayingMovies;
   final user = FirebaseAuth.instance.currentUser;
   final userData = FirebaseFirestore.instance.collection('users').get();
@@ -23,6 +24,9 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> topRatedMovies;
   final TextEditingController searchController = TextEditingController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

@@ -21,10 +21,14 @@ class MoviePage extends StatefulWidget {
   State<MoviePage> createState() => _MoviePageState();
 }
 
-class _MoviePageState extends State<MoviePage> {
+class _MoviePageState extends State<MoviePage>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<Movie>> recommendedMovies;
   final user = FirebaseAuth.instance.currentUser;
   bool isFavorited = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

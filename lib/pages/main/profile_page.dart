@@ -12,9 +12,13 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage>
+    with AutomaticKeepAliveClientMixin {
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Future<DocumentSnapshot> userSnapshot;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
